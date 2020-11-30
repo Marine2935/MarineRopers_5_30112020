@@ -1,0 +1,30 @@
+@import "variable_overrides";
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+header {
+    background: $orinoco_bg;
+}
+
+footer {
+    background: $orinoco;
+}
+
+.menu {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.icone_panier {
+    margin-right: 6px;
+}
+   
+.input {
+    &__container {
+        position: relative;
+    }
+    &__icon {
+        position: absolute;
+        top: 5px;
+        right: 25px;
+    }
+}
