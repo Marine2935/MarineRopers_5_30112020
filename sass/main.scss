@@ -1,5 +1,6 @@
 @import "variable_overrides";
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import "card";
 
 header {
     background: $orinoco_bg;
@@ -27,4 +28,8 @@ footer {
         top: 5px;
         right: 25px;
     }
+}
+
+a {
+    cursor: pointer;
 }
