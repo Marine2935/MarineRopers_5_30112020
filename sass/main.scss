@@ -32,4 +32,14 @@ footer {
 
 a {
     cursor: pointer;
+    text-decoration: none!important;
+}
+
+a:hover {
+    color: darken($dark, 15);
+}
+
+.jumbotron {
+    background: url('../images/texture_bois.jpg');
+    background-size: cover;
 }
