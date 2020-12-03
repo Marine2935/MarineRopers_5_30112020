@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="css/style.css" />
 
     <script src="js/product.js"></script>
-    <title>Orinoco</title>
+    
+    <title></title>
 </head>
 <body>
     <header>
@@ -37,26 +38,61 @@
         </div>
     </header> 
     <div class="container">   
-        <div class="row my-3">
+        <div class="row my-5">
                 <div id="furnitureImage" class="col-12 col-md-6"></div>
                 <div class="col">
                     <div class="row">
                         <div id="furnitureDescription" class="col"></div>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col mt-4">
                             <form method="post" action ="">
                                 <label for="varnish">Choix de vernis</label>
                                 <br>
-                                <select id="furnitureVarnish" name="varnish"></select>
+                                <select id="furnitureVarnish" name="varnish">
+                                </select>
                             </form>
                             <div id="furniturePrice"></div> 
                         </div>
                     </div>
-                    <div class="text-right">
-                        <button class="btn btn-info">Ajouter au panier</button>
+                    <div class="row text-right justify-content-end">
+                        <div class="col-4 pl-5">
+                            <input type="number" />
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-info">Ajouter au panier</button>
+                        </div>       
                     </div>                                            
                 </div>                
+            </div>
+        </div>
+    </div>
+    <div class="container my-5">
+        <h4 class="text-center text-dark font-weight-bold mb-4">Vous aimerez aussi ...</h4>
+
+        <div id="carouselControls" class="row carousel slide carousel-multi-item justify-content-center" data-ride="carousel">
+
+        </div>
+    </div>
+    <div class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 col-lg-3 p-4 text-center">
+                    <i class="fas fa-award pb-2 banner_icon"></i><br>
+                    Garantie 2 ans
+                </div>
+                <div class="col-6 col-lg-3 p-4 text-center">
+                    <i class="fas fa-undo-alt pb-2 banner_icon"></i><br>
+                    30 jours pour changer d'avis
+                </div>
+                <div class="col-6 col-lg-3 p-4 text-center">
+                    <i class="far fa-credit-card pb-2 banner_icon"></i><br>
+                    Paiement en 3x ou 4x sans frais
+                </div>
+                <div class="col-6 col-lg-3 p-4 text-center">
+                    <i class="fas fa-lock pb-2 banner_icon"></i><br>
+                    Paiement sécurisé
+                </div>
             </div>
         </div>
     </div>
@@ -91,5 +127,20 @@
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
+
+    <script src="./js/src/bootstrap-input-spinner.js"></script>
+
+    <script>
+        $("input[type='number']").inputSpinner();
+    </script>
+
+    <script>
+    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+                event.preventDefault();
+                $(this).ekkoLightbox();
+            });       
+    </script>
+   
 </body>
 </html>

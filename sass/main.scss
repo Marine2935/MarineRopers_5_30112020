@@ -1,6 +1,7 @@
 @import "variable_overrides";
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 @import "card";
+@import "product";
 
 header {
     background: $orinoco_bg;
@@ -42,4 +43,8 @@ a:hover {
 .jumbotron {
     background: url('../images/texture_bois.jpg');
     background-size: cover;
+}
+
+.banner_icon{
+    font-size: 1.8em;
 }
