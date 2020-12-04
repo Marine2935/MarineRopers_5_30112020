@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="images/fontawesome/css/all.css" />
     <link rel="stylesheet" href="css/style.css" />
 
+    <script src="js/request.js"></script>
+    <script src="js/constante.js"></script>
     <script src="js/product.js"></script>
     
     <title></title>
@@ -57,7 +59,7 @@
                     </div>
                     <div class="row text-right justify-content-end">
                         <div class="col-4 pl-5">
-                            <input type="number" />
+                            <input type="number" min="1" />
                         </div>
                         <div class="col-4">
                             <button class="btn btn-info">Ajouter au panier</button>
@@ -129,7 +131,7 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
 
-    <script src="./js/src/bootstrap-input-spinner.js"></script>
+    <script src="./node_modules/bootstrap-input-spinner/src/bootstrap-input-spinner.js"></script>
 
     <script>
         $("input[type='number']").inputSpinner();

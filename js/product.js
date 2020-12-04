@@ -1,14 +1,5 @@
-const euro = new Intl.NumberFormat('fr-FR', {
-  style: 'currency',
-  currency: 'EUR',
-  minimumFractionDigits: 2
-});
-
-let requestProduct = new XMLHttpRequest();
-requestProduct.open('GET', 'http://localhost:3000/api/furniture/5be9cc611c9d440000c1421e');
-requestProduct.addEventListener('load', function() {
-    if(requestProduct.status >= 200) {
-        let furnitures = JSON.parse(requestProduct.responseText);
+get('http://localhost:3000/api/furniture/5beaae361c9d440000a57d99')
+    .then((furnitures) => {
         let htmlVarnish = '';
 
         document.getElementById('furnitureImage').innerHTML = displayImage(furnitures);
@@ -24,21 +15,14 @@ requestProduct.addEventListener('load', function() {
         document.getElementById('furnitureVarnish').innerHTML = htmlVarnish;
 
         document.title = title(furnitures);
-    }
+    });
 
-});
-requestProduct.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-requestProduct.send();
+// bloc 'Vous aimerez aussi'
 
-
-
-let request = new XMLHttpRequest();
-request.open('GET', 'http://localhost:3000/api/furniture');
-request.addEventListener('load', function() {
-    if(request.status >= 200) {
-        let furnitures = JSON.parse(request.responseText);
+get('http://localhost:3000/api/furniture')
+    .then((furnitures) => {
         let product = '';
-        
+            
         furnitures.forEach((furniture) => {
             product += carousel(furniture)
         });
@@ -51,10 +35,7 @@ request.addEventListener('load', function() {
                                                                                 <span class="carousel-control-next-icon ml-5" aria-hidden="true"></span>
                                                                                 <span class="sr-only">Suivant</span>
                                                                             </a>`;
-    }
-});
-request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-request.send();
+    });
 
 
 //  ---------------  FONCTIONS  ---------------  //
@@ -78,7 +59,8 @@ function carousel(furniture) {
 }
 
 function displayDescription(furniture) {
-    return `<h2 class="text-center text-dark font-weight-bold my-4 meuble__name">${furniture.name}</h2>
+    return `<h1 class="h2 text-center text-dark font-weight-bold my-3">${furniture.name}</h1>
+            <hr>
             <p class="meuble__description">${furniture.description}</p>`
 };
 
@@ -91,7 +73,7 @@ function displayImage(furniture) {
 };
 
 function displayPrice(furniture) {
-    return `<p class="text-right font-weight-bold mt-4 meuble__price">${euro.format(furniture.price / 100)}</p>`
+    return `<p class="h4 text-right font-weight-bold my-4">${euro.format(furniture.price / 100)}</p>`
 }
 function displayVarnish(varnish) {
    return `<option>${varnish}</option>`
