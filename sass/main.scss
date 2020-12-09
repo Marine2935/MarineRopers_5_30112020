@@ -52,3 +52,38 @@ a:hover {
 .form_input {
     width: 100%;
 }
+
+.btn_remove {
+    background: none;
+    color: #505050;
+    &:focus {
+        outline: none;
+    }
+}
+
+.popUp {
+    display: none;
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.5);
+    &__alert {
+        background-color: #FFFFFF;
+        width: 37%;
+        height: 28%;
+        position: relative;
+    }
+}
+
+.btn_close {
+    background: none;
+    content: ""; 
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 1.8em;
+}

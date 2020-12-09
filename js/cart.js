@@ -1,42 +1,84 @@
-if(isStored('products')) {
     let htmlCart = '';
-    let idProduct = get('products');  
-    let total = 0;  
+    let total = 0;
 
-    idProduct.forEach((idProduct) => {
+if(isStored('products')) {    
+    let idProduct = get('products');      
+    
+    displayCart(idProduct);
+
+    new Promise(() => {
+       setTimeout(() => {
+           document.querySelectorAll('.btn_remove').forEach(button => {
+                button.addEventListener('click', function() {   
+                console.log('clic')        
+                let index = idProduct.indexOf(this.dataset.id);
+                console.log(this.dataset.id);
+                idProduct.splice(index, 1);
+                console.log(idProduct)
+                localStorage.removeItem('products');
+                save('products', idProduct)
+                let node = document.getElementById(this.dataset.id)
+                if(node.parentNode) {
+                   node.parentNode.removeChild(node)
+                }
+                htmlCart= '';
+                total = 0;
+                displayCart(idProduct)
+                display('productNumber', idProduct.length);
+           })           
+       })
+    }, 1000)
+})
+
+display('productNumber', idProduct.length);
+
+} else {    
+    emptyCart();
+}
+
+let removeAll = document.getElementById('removeAll');
+removeAll.addEventListener('click', function() {
+    localStorage.removeItem('products');
+    emptyCart();
+})
+
+function displayCart(array) {
+    array.forEach((idProduct) => {
         ajax(idProduct)
         .then((product) => {
-            htmlCart += cartList(product); 
-            display('cartList', `<h1 class="mb-5 text-dark font-weight-bold">Votre panier</h1>` + htmlCart);
+            htmlCart += displayFurniture(product, 'cart'); 
+            display('cartList', htmlCart);
 
             total += product.price;
-            display('total', euro.format(total/100))
+            display('totalCart', euro.format(total/100))
+            
+            delivery(total)
+                    
         })
-    }) 
-    display('productNumber', idProduct.length);
-} else {    
-    display('cartList', emptyCart());
-    document.getElementById('form').style.display = 'none';
+    })   
 }
 
-function cartList(product) {
-    return `
-        <div class="row">
-            <div class="col">
-                <img src="${product.imageUrl}" class="rounded" width="100" height="100">
-            </div>
-            <div class="col align-self-center">
-                <p class="h4">${product.name}</p>
-            </div>
-            <div class="col align-self-center">
-                <p class="font-weight-bold h5">${euro.format(product.price / 100)}</h2>
-            </div>
-        </div>
-        <hr>
-        `
+function delivery(value) {
+    if((value / 100) >= 1000) {
+        display('deliveryCosts', 'Offerts');
+        document.getElementById('deliveryCosts').style.fontWeight = 'bold';
+        document.getElementById('delivery').style.color = '#0AA32D';
+        display('total', euro.format(total/100))
+    } else {
+        display('deliveryCosts', euro.format(75));
+        display('total', euro.format(total/100 + 75))
+    } 
 }
 
-function emptyCart() {    
+function emptyCart() {
+    display('cartList', emptyCartMessage());
+    displayNone('summary');
+    displayNone('form');
+    displayNone('cartTitle');
+    displayNone('removeAll');
+}
+
+function emptyCartMessage() {    
     return `
         <h1 class="mb-5 text-dark font-weight-bold">Votre panier est vide</h1>
         <a class="btn btn-info" role="button" href="index.html">Continuer mes achats</a>`

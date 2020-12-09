@@ -3,7 +3,7 @@ ajax('')
     let html = '';
         
     furnitures.forEach((furniture) => {
-        html += displayMeuble(furniture, 'card');
+        html += displayFurniture(furniture, 'card');
     });
     display('furnitureList', html);
 });

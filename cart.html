@@ -40,16 +40,35 @@
         </div>
     </header>
     <div class="container">
-        <div id="cartList" class="text-center my-5"></div>
-        <div class="row justify-content-end">
-            <div class="col-4">
-                <h3>Récapitulatif de la commande</h3>
-                    <p>Nombre d'article(s) : <span id="productNumber"></span></p>
-                    <p>Total : <span id="total"></span></p>
+        <h1 id="cartTitle" class="text-center text-dark font-weight-bold my-5">Votre panier</h1>
+        <div class="row">
+            <div id="cartList" class="col text-center my-4"></div>
+            <div id="summary" class="col-4 bg-light border rounded my-4 p-4 h-100">
+                <h3 class="font-weight-bold mb-4">Récapitulatif</h3>
+                <div class="d-flex justify-content-between">
+                    <p>Nombre d'article(s) : </p>
+                    <p id="productNumber"></p> 
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p>Total article(s) : </p>
+                    <p id="totalCart"></p>
+                </div>  
+                <hr class="mt-0">                    
+                <div id="delivery" class="d-flex justify-content-between">
+                    <p>Frais de livraison : </p>
+                    <p id="deliveryCosts"></p>
+                </div> 
+                <hr class="mt-0">  
+                <div class="d-flex justify-content-between font-weight-bold">
+                    <p>TOTAL : </p>
+                    <p id="total"></p>
+                </div>
             </div>
-        </div>
+            <div class="col-12">
+                <button id="removeAll">Vider le panier</button>
+            </div>
+        </div>        
         <div id="form">
-            <hr>
             <h2 class="text-center font-weight-bold text-dark mt-5">Passer la commande</h2>
             <form class="my-5">
                 <div class="row justify-content-center my-3">

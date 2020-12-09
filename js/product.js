@@ -4,7 +4,7 @@ ajax(getIdFromUrl())
 
     document.title = title(furniture);
 
-    display('furnitureDetails', displayMeuble(furniture, 'single'));
+    display('furnitureDetails', displayFurniture(furniture, 'single'));
 
     furniture.varnish.forEach((varnish) => {
         htmlVarnish += displayVarnish(varnish)
@@ -21,9 +21,29 @@ ajax(getIdFromUrl())
 
         products.push(getIdFromUrl());
 
-        save('products', products);        
+        save('products', products);   
+        document.getElementById('popUp').style.display = 'flex';
+        display('popUpAlert', displayPopUp('popUp'))
+        document.getElementById('buttonClose').addEventListener('click', function() {
+            displayNone('popUp')
+        })
     })
 });
+
+function displayPopUp() {    
+    return `
+        <h4>L'article a été ajouté à votre panier</h4>
+        <button id="buttonClose" class="border-0 btn_close text-dark pr-3"><i class="fas fa-times"></i></button>
+        <hr>
+        <div class="row my-5">
+            <div class="col">
+                <a class="btn btn-info" role="button" href="index.html">Continuer mes achats</a>
+            </div>
+            <div class="col text-right">
+                <a class="btn btn-info" role="button" href="cart.html">Voir mon panier</a>
+            </div>
+        </div>`
+}
 
 // bloc 'Vous aimerez aussi'
 
@@ -33,40 +53,15 @@ ajax('')
         
     furnitures.forEach((furniture) => {
         if(furniture._id !== getIdFromUrl()) {
-        product += carousel(furniture)
+        product += displayFurniture(furniture, 'carousel')
         }
     });
 
-    display('carouselControls', product +  `<a class="carousel-control-prev" href="#carouselControls" role="button" data-slide="prev">
-                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Précédent</span>
-                                            </a>
-                                            <a class="carousel-control-next" href="#carouselControls" role="button" data-slide="next">
-                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                <span class="sr-only">Suivant</span>
-                                            </a>`);
+    display('carouselControls', product);
 });
 
 
 //  ---------------  FONCTIONS  ---------------  //
-
-function carousel(furniture) {
-   // if(furniture._id !== furnitures._id) {
-        return `<div class="col-4 col-md-3 col-lg-2">
-                    <div class="card">
-                        <img src="${furniture.imageUrl}" class="d-block" height="100">
-                        <div class="card-body p-3 banner_card">                            
-                                <h5 class="card-title text-center banner_title mb-0">
-                                    <a class="stretched-link text-dark" href="product.html?id=${furniture._id}">
-                                        ${furniture.name}
-                                    </a>
-                                </h5>                            
-                            <p class="card-text text-center font-weight-bold">${euro.format(furniture.price / 100)}</p>
-                        </div>
-                    </div>
-                </div>`
-    //}
-}
 
 function displayVarnish(varnish) {
    return `<option>${varnish}</option>`
