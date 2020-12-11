@@ -1,0 +1,11 @@
+.form_input {
+    width: 100%;
+}
+
+.btn_remove {
+    background: none;
+    color: #505050;
+    &:focus {
+        outline: none;
+    }
+}

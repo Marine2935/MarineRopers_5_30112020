@@ -1,85 +1,92 @@
-    let htmlCart = '';
-    let total = 0;
+let products = get('products');  
 
-if(isStored('products')) {    
-    let idProduct = get('products');      
+if(isStored('products')) {         
     
-    displayCart(idProduct);
+    displayCart(products);
 
     new Promise(() => {
        setTimeout(() => {
            document.querySelectorAll('.btn_remove').forEach(button => {
-                button.addEventListener('click', function() {   
-                console.log('clic')        
-                let index = idProduct.indexOf(this.dataset.id);
-                console.log(this.dataset.id);
-                idProduct.splice(index, 1);
-                console.log(idProduct)
+                button.addEventListener('click', () => {;     
+                removeItemFromArray(products, this.dataset.id);
+
                 localStorage.removeItem('products');
-                save('products', idProduct)
-                let node = document.getElementById(this.dataset.id)
-                if(node.parentNode) {
-                   node.parentNode.removeChild(node)
-                }
-                htmlCart= '';
-                total = 0;
-                displayCart(idProduct)
-                display('productNumber', idProduct.length);
+                save('products', products);
+
+                removeItemFromCart(this.dataset.id); 
+
+                displayCart(products)
+                display('productNumber', products.length);    
            })           
        })
+       getElement('removeAll').addEventListener('click', () => {
+            localStorage.removeItem('products');
+            emptyCart();
+        })
     }, 1000)
 })
 
-display('productNumber', idProduct.length);
+display('productNumber', products.length);
 
 } else {    
     emptyCart();
 }
 
-let removeAll = document.getElementById('removeAll');
-removeAll.addEventListener('click', function() {
-    localStorage.removeItem('products');
-    emptyCart();
+//////////// FORMULAIRE
+
+class Contact {
+    constructor(name, firstName, adress, postal, city, phone, email) {
+        this.name = name;
+        this.firstName = firstName;
+        this.adress = adress;
+        this.postal = postal;
+        this.city = city;
+        this.phone = phone;
+        this.email = email
+    }
+}
+
+let contact = new Contact()
+
+getElement('name').addEventListener('change', (event) => {
+    contact.name = event.target.value;       
+});
+
+getElement('first_name').addEventListener('change', (event) => {
+    contact.firstName = event.target.value;       
+});
+
+getElement('adress').addEventListener('change', (event) => {
+    contact.adress = event.target.value;       
+});
+
+getElement('postal').addEventListener('change', (event) => {
+    contact.postal = event.target.value;       
+});
+
+getElement('city').addEventListener('change', (event) => {
+    contact.city = event.target.value;       
+});
+
+getElement('phone').addEventListener('change', (event) => {
+    contact.phone = event.target.value;       
+});
+
+getElement('email').addEventListener('change', (event) => {
+    contact.email = event.target.value;       
+});
+
+getElement('buttonSubmit').addEventListener('click', () => {
+    //ajaxPost(contact, products);
 })
 
-function displayCart(array) {
-    array.forEach((idProduct) => {
-        ajax(idProduct)
-        .then((product) => {
-            htmlCart += displayFurniture(product, 'cart'); 
-            display('cartList', htmlCart);
-
-            total += product.price;
-            display('totalCart', euro.format(total/100))
-            
-            delivery(total)
-                    
-        })
-    })   
-}
-
-function delivery(value) {
-    if((value / 100) >= 1000) {
-        display('deliveryCosts', 'Offerts');
-        document.getElementById('deliveryCosts').style.fontWeight = 'bold';
-        document.getElementById('delivery').style.color = '#0AA32D';
-        display('total', euro.format(total/100))
-    } else {
-        display('deliveryCosts', euro.format(75));
-        display('total', euro.format(total/100 + 75))
-    } 
-}
-
-function emptyCart() {
-    display('cartList', emptyCartMessage());
-    displayNone('summary');
-    displayNone('form');
-    displayNone('cartTitle');
-    displayNone('removeAll');
-}
-
-function emptyCartMessage() {    
-    return `
-        <h1 class="mb-5 text-dark font-weight-bold">Votre panier est vide</h1>
-        <a class="btn btn-info" role="button" href="index.html">Continuer mes achats</a>`
+function ajaxPost(form, array) {
+    let order_id = 'order_2569';
+    fetch('http://localhost:3000/api/furniture/order/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({form, array, order_id})
+    })
 }

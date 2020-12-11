@@ -10,9 +10,9 @@
 
     <script src="js/utils.js" defer></script>
     <script src="js/constante.js" defer></script>
-    <script src="js/product.js" defer></script>
-    
-    <title></title>
+    <script src="js/confirmation.js" defer></script>
+
+    <title>Document</title>
 </head>
 <body>
     <header>
@@ -31,46 +31,15 @@
                             <a class="nav-link" href="index.html">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="cart.html"><i class="fas fa-shopping-basket icone_panier"></i>Panier</a>
+                            <a class="nav-link" href=""><i class="fas fa-shopping-basket icone_panier"></i>Panier</a>
                         </li>
                     </ul> 
                     </div>
                 </nav>
             </div>            
         </div>
-    </header> 
-    <div class="container">
-        <div id="popUp" class="popUp justify-content-center align-items-center text-center">
-            <div id="popUpAlert" class="popUp__alert rounded p-5"></div>
-        </div>   
-        <div id="furnitureDetails" class="row mb-5 mt-5 mt-lg-4 mt-xl-5 justify-content-center"></div>        
-    </div>
-    <div class="container my-5">
-        <h4 class="text-center text-dark font-weight-bold mb-4">Vous aimerez aussi ...</h4>
-        <div id="carousel" class="row justify-content-center"></div>
-    </div>
-    <div class="bg-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-6 col-lg-3 p-4 text-center">
-                    <i class="fas fa-award pb-2 banner_icon"></i><br>
-                    Garantie 2 ans
-                </div>
-                <div class="col-6 col-lg-3 p-4 text-center">
-                    <i class="fas fa-undo-alt pb-2 banner_icon"></i><br>
-                    30 jours pour changer d'avis
-                </div>
-                <div class="col-6 col-lg-3 p-4 text-center">
-                    <i class="far fa-credit-card pb-2 banner_icon"></i><br>
-                    Paiement en 3x ou 4x sans frais
-                </div>
-                <div class="col-6 col-lg-3 p-4 text-center">
-                    <i class="fas fa-lock pb-2 banner_icon"></i><br>
-                    Paiement sécurisé
-                </div>
-            </div>
-        </div>
-    </div>
+    </header>
+    
     <footer>
         <div class="container">
             <div class="row py-3 text-light">
@@ -94,7 +63,7 @@
                 </div>
             </div>
         </div>
-    </footer>
+    </footer>   
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 
@@ -102,20 +71,5 @@
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
-
-    <script src="./node_modules/bootstrap-input-spinner/src/bootstrap-input-spinner.js"></script>
-
-    <script>
-        $("input[type='number']").inputSpinner();
-    </script>
-
-    <script>
-    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-                event.preventDefault();
-                $(this).ekkoLightbox();
-            });       
-    </script>
-   
 </body>
 </html>

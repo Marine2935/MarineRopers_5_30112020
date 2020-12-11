@@ -1,14 +1,19 @@
 @import "variable_overrides";
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
-@import "card";
+@import "cart";
 @import "product";
+
+a {
+    cursor: pointer;
+    text-decoration: none!important;
+}
+
+a:hover {
+    color: darken($dark, 15);
+}
 
 header {
     background: $orinoco_bg;
-}
-
-footer {
-    background: $orinoco;
 }
 
 .menu {
@@ -31,59 +36,33 @@ footer {
     }
 }
 
-a {
-    cursor: pointer;
-    text-decoration: none!important;
-}
-
-a:hover {
-    color: darken($dark, 15);
-}
-
 .jumbotron {
     background: url('../images/texture_bois.jpg');
     background-size: cover;
 }
 
-.banner_icon{
-    font-size: 1.8em;
-}
-
-.form_input {
-    width: 100%;
-}
-
-.btn_remove {
-    background: none;
-    color: #505050;
-    &:focus {
-        outline: none;
+.furniture {
+    &__img {
+        object-fit: contain;
+        width: 100%;
+        max-height: 400px;
+    }
+    &__name {
+        font-size: 1.5em;
+    }
+    &__description {
+        font-size: .9em;
+        color: grey;
+    }
+    &__price {
+        font-size: 1.2em;
     }
 }
 
-.popUp {
-    display: none;
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
-    background: rgba(0, 0, 0, 0.5);
-    &__alert {
-        background-color: #FFFFFF;
-        width: 37%;
-        height: 28%;
-        position: relative;
-    }
+.banner_icon {
+    font-size: 1.8em;
 }
 
-.btn_close {
-    background: none;
-    content: ""; 
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 1.8em;
+footer {
+    background: $orinoco;
 }

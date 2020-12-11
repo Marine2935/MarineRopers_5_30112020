@@ -42,7 +42,7 @@
     <div class="container">
         <h1 id="cartTitle" class="text-center text-dark font-weight-bold my-5">Votre panier</h1>
         <div class="row">
-            <div id="cartList" class="col text-center my-4"></div>
+            <div id="cartList" class="col text-center mt-4"></div>
             <div id="summary" class="col-4 bg-light border rounded my-4 p-4 h-100">
                 <h3 class="font-weight-bold mb-4">Récapitulatif</h3>
                 <div class="d-flex justify-content-between">
@@ -63,14 +63,11 @@
                     <p>TOTAL : </p>
                     <p id="total"></p>
                 </div>
-            </div>
-            <div class="col-12">
-                <button id="removeAll">Vider le panier</button>
-            </div>
-        </div>        
+            </div>            
+        </div>     
         <div id="form">
             <h2 class="text-center font-weight-bold text-dark mt-5">Passer la commande</h2>
-            <form class="my-5">
+            <form method="get" class="my-5">
                 <div class="row justify-content-center my-3">
                     <div class="col-3">
                         <label for="name">Nom</label><br>
@@ -83,37 +80,37 @@
                 </div>
                 <div class="row justify-content-center my-3">
                     <div class="col-6">
-                        <label for="">Adresse de livraison</label><br>
-                        <input class="form_input rounded" type="text" required>
+                        <label for="adress">Adresse de livraison</label><br>
+                        <input class="form_input rounded" type="text" name="adress" id="adress" required>
                     </div>
                 </div>
                 <div class="row justify-content-center my-3">
                     <div class="col-3">
-                        <label for="">Code Postal</label><br>
-                        <input class="form_input rounded" type="" required>
+                        <label for="postal">Code Postal</label><br>
+                        <input class="form_input rounded" type="text" id="postal" pattern="[0-9]+" maxlength="5" required>
                     </div>
                     <div class="col-3">
-                        <label for="">Ville</label><br>
-                        <input class="form_input rounded" type="text" required>
+                        <label for="city">Ville</label><br>
+                        <input class="form_input rounded" type="text" name="city" id="city" required>
                     </div>
                 </div>
                 <div class="row justify-content-center my-3">
                     <div class="col-3">
-                        <label for="tel">Numéro de téléphone</label><br>
-                        <input class="form_input rounded" type="" required>
+                        <label for="phone">Numéro de téléphone</label><br>
+                        <input class="form_input rounded" type="tel" pattern="[0-9]+" minlength="10" name="phone" id="phone" required>
                     </div>
                     <div class="col-3">
                         <label for="email">Adresse mail</label><br>
-                        <input class="form_input rounded" type="email" required>
+                        <input class="form_input rounded" type="email" name="email" id="email" required>
                     </div>
                 </div>
                 <div class="text-center mt-5">
-                <button class="btn btn-dark" type="submit">Commander</button>
+                <button id="buttonSubmit" class="btn btn-dark" type="submit">Commander</button>
             </div>
             </form>
         </div>
     </div>
-    <div class="bg-light">
+    <div class="bg-light mt-5">
         <div class="container">
             <div class="row">
                 <div class="col-6 col-lg-3 p-4 text-center">
