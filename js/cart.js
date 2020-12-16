@@ -1,92 +1,154 @@
-let products = get('products');  
+if(!storage.has('products')) {   
+    emptyCart();
+}   
 
-if(isStored('products')) {         
-    
-    displayCart(products);
+let products = storage.get('products');
 
-    new Promise(() => {
-       setTimeout(() => {
-           document.querySelectorAll('.btn_remove').forEach(button => {
-                button.addEventListener('click', () => {;     
-                removeItemFromArray(products, this.dataset.id);
-
-                localStorage.removeItem('products');
-                save('products', products);
-
-                removeItemFromCart(this.dataset.id); 
-
-                displayCart(products)
-                display('productNumber', products.length);    
-           })           
-       })
-       getElement('removeAll').addEventListener('click', () => {
-            localStorage.removeItem('products');
-            emptyCart();
-        })
-    }, 1000)
+ajax('')
+.then((allProducts) => {  
+    displayCart(allProducts);    
+})
+.then(() => {    
+    products.forEach((product) => {
+        addDeletion(product);
+    })
+        
+    listenRemoveAll('removeAll');
 })
 
-display('productNumber', products.length);
 
-} else {    
-    emptyCart();
-}
+
 
 //////////// FORMULAIRE
 
-class Contact {
-    constructor(name, firstName, adress, postal, city, phone, email) {
-        this.name = name;
-        this.firstName = firstName;
-        this.adress = adress;
-        this.postal = postal;
-        this.city = city;
-        this.phone = phone;
-        this.email = email
+const contact = {
+    firstName : getElement('firstName').value,
+    lastName : getElement('lastName').value,    
+    address : getElement('address').value,
+    city : getElement('city').value,
+    email : getElement('email').value
+}
+
+console.log(getElement('totalPrice'))
+
+getElement('buttonSubmit').addEventListener('click', (event) => {
+    event.preventDefault();
+    ajax('order', optionsPost({contact, products}))
+    .then((result) => {
+        storage.save('orderId', result.orderId);
+        document.location.href="confirmation.html"
+    })
+        
+})
+
+
+///////// FONCTIONS
+
+function addDeletion(product) {
+    getElement(`remove-${product}`).addEventListener('click', () => {     
+        removeItemFromArray(products, product);
+
+        storage.remove('products');
+        storage.save('products', products);
+
+        removeItemFromCart(product);
+
+        window.location.reload;
+    })           
+}
+
+function countTotal(products) {
+    let initialValue = 0;
+    return products.reduce((acc, product) => 
+        acc + product.price, initialValue
+    )
+}
+
+function delivery(value) {
+    if((value / 100) >= 1000) {
+        display('deliveryCosts', 'Offerts');
+        getElement('deliveryCosts').style.fontWeight = 'bold';
+        getElement('delivery').style.color = '#0AA32D';
+        return 0
+    } else {
+        display('deliveryCosts', money(7500));
+        return 7500
+    } 
+}
+
+function displayCart(allProducts) {
+    let productsInCart = filterProducts(allProducts)    
+    let html = '';
+
+    productsInCart.forEach((product) => {
+        html += displayFurniture(product, 'cart')
+    })  
+    
+    display('cartList', html + htmlButtonRemoveAll());
+    displaySummary(productsInCart);
+}
+
+function displaySummary(products) {
+    let total = countTotal(products);
+    let totalPrice = money(total + delivery(total))
+
+    display('productNumber', products.length);
+    display('totalCart', money(total));
+    display('totalPrice', totalPrice)
+    storage.save('totalPrice', totalPrice)
+}
+
+function emptyCart() {
+    display('cartList', emptyCartMessage());
+    changeDisplay('summary', 'none');
+    changeDisplay('form', 'none');
+    changeDisplay('cartTitle', 'none');
+}
+
+function emptyCartMessage() {    
+    return `
+        <h1 class="mb-5 text-dark font-weight-bold">Votre panier est vide</h1>
+        <a class="btn btn-info" role="button" href="index.html">Continuer mes achats</a>`
+}
+
+function filterProducts(productsIds) { 
+    return productsIds.filter((product) => {
+        return (products.includes(product._id));
+    })
+}
+
+function htmlButtonRemoveAll() {
+    return `
+        <div class="text-right">
+            <button id="removeAll" class="btn btn-light shadow-sm">Vider le panier</button>
+        </div>`        
+}
+
+function listenRemoveAll(id) {
+    getElement(id).addEventListener('click', () => {
+        storage.remove('products');
+        emptyCart();
+    })
+}
+
+function optionsPost(object) {
+    return {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(object)
     }
 }
 
-let contact = new Contact()
+function removeItemFromArray(array, id) {
+    let index = array.indexOf(id);
+    array.splice(index, 1);
+}
 
-getElement('name').addEventListener('change', (event) => {
-    contact.name = event.target.value;       
-});
-
-getElement('first_name').addEventListener('change', (event) => {
-    contact.firstName = event.target.value;       
-});
-
-getElement('adress').addEventListener('change', (event) => {
-    contact.adress = event.target.value;       
-});
-
-getElement('postal').addEventListener('change', (event) => {
-    contact.postal = event.target.value;       
-});
-
-getElement('city').addEventListener('change', (event) => {
-    contact.city = event.target.value;       
-});
-
-getElement('phone').addEventListener('change', (event) => {
-    contact.phone = event.target.value;       
-});
-
-getElement('email').addEventListener('change', (event) => {
-    contact.email = event.target.value;       
-});
-
-getElement('buttonSubmit').addEventListener('click', () => {
-    //ajaxPost(contact, products);
-})
-
-function ajaxPost(form, array) {
-    let order_id = 'order_2569';
-    fetch('http://localhost:3000/api/furniture/order/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify({form, array, order_id})
-    })
+function removeItemFromCart(id) { 
+    let node = getElement(id);
+    if(node.parentNode) {
+        node.parentNode.removeChild(node)
+    };
 }

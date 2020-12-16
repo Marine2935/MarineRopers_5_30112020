@@ -3,3 +3,5 @@ const euro = new Intl.NumberFormat('fr-FR', {
   currency: 'EUR',
   minimumFractionDigits: 2
 });
+
+const storage = new Storage();
