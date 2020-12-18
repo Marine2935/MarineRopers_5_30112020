@@ -1,8 +1,8 @@
+let products = storage.get('products');
+
 if(!storage.has('products')) {   
     emptyCart();
 }   
-
-let products = storage.get('products');
 
 ajax('')
 .then((allProducts) => {  
@@ -17,19 +17,17 @@ ajax('')
 })
 
 
-
-
 //////////// FORMULAIRE
 
 const contact = {
     firstName : getElement('firstName').value,
-    lastName : getElement('lastName').value,    
+    lastName : getElement('lastName').value,            
     address : getElement('address').value,
+    postal : getElement('postal').value,
     city : getElement('city').value,
+    phone : getElement('phone').value,
     email : getElement('email').value
 }
-
-console.log(getElement('totalPrice'))
 
 getElement('buttonSubmit').addEventListener('click', (event) => {
     event.preventDefault();
@@ -38,7 +36,6 @@ getElement('buttonSubmit').addEventListener('click', (event) => {
         storage.save('orderId', result.orderId);
         document.location.href="confirmation.html"
     })
-        
 })
 
 
@@ -47,13 +44,8 @@ getElement('buttonSubmit').addEventListener('click', (event) => {
 function addDeletion(product) {
     getElement(`remove-${product}`).addEventListener('click', () => {     
         removeItemFromArray(products, product);
-
-        storage.remove('products');
-        storage.save('products', products);
-
-        removeItemFromCart(product);
-
-        window.location.reload;
+        refreshStorage('products');
+        window.location.reload();
     })           
 }
 
@@ -66,25 +58,20 @@ function countTotal(products) {
 
 function delivery(value) {
     if((value / 100) >= 1000) {
-        display('deliveryCosts', 'Offerts');
+        displayHTML('deliveryCosts', 'Offerts');
         getElement('deliveryCosts').style.fontWeight = 'bold';
         getElement('delivery').style.color = '#0AA32D';
         return 0
     } else {
-        display('deliveryCosts', money(7500));
+        displayHTML('deliveryCosts', money(7500));
         return 7500
     } 
 }
 
 function displayCart(allProducts) {
-    let productsInCart = filterProducts(allProducts)    
-    let html = '';
-
-    productsInCart.forEach((product) => {
-        html += displayFurniture(product, 'cart')
-    })  
+    let productsInCart = filterProducts(allProducts)   
     
-    display('cartList', html + htmlButtonRemoveAll());
+    displayFurnitures(productsInCart, 'cart', 'cartList', htmlButtonRemoveAll());
     displaySummary(productsInCart);
 }
 
@@ -92,14 +79,14 @@ function displaySummary(products) {
     let total = countTotal(products);
     let totalPrice = money(total + delivery(total))
 
-    display('productNumber', products.length);
-    display('totalCart', money(total));
-    display('totalPrice', totalPrice)
+    displayHTML('productNumber', products.length);
+    displayHTML('totalCart', money(total));
+    displayHTML('totalPrice', totalPrice)
     storage.save('totalPrice', totalPrice)
 }
 
 function emptyCart() {
-    display('cartList', emptyCartMessage());
+    displayHTML('cartList', emptyCartMessage());
     changeDisplay('summary', 'none');
     changeDisplay('form', 'none');
     changeDisplay('cartTitle', 'none');
@@ -141,14 +128,14 @@ function optionsPost(object) {
     }
 }
 
+function refreshStorage(name) {
+    storage.remove(name);
+    if(products.length !== 0) {
+        storage.save(name, products);
+    } 
+}
+
 function removeItemFromArray(array, id) {
     let index = array.indexOf(id);
     array.splice(index, 1);
-}
-
-function removeItemFromCart(id) { 
-    let node = getElement(id);
-    if(node.parentNode) {
-        node.parentNode.removeChild(node)
-    };
 }

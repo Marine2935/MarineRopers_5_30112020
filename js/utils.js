@@ -6,18 +6,14 @@ function changeDisplay(id, display) {
     document.getElementById(id).style.display = display;
 }
 
-function display(id, html) {
-    document.getElementById(id).innerHTML = html;
-}
-
-function displayFurniture(furniture, type) {
+function htmlFurniture(furniture, type) {
     if(type == 'card') {
         return `
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card border-0 my-4 mx-4">
                     <img src="${furniture.imageUrl}" class="rounded furniture__img" height="200">
                     <div class="card-body px-1 ">
-                        <a id="link" class="stretched-link text-dark" href="product.html?id=${furniture._id}">
+                        <a class="stretched-link text-dark" href="product.html?id=${furniture._id}">
                             <h2 class="card-title text-center furniture__name">${furniture.name}</h2>
                         </a>
                         <p class="card-text px-3 text-justify furniture__description">${furniture.description}</p>
@@ -29,7 +25,7 @@ function displayFurniture(furniture, type) {
 
     if(type == 'carousel') {
         return `
-            <div class="col-4 col-md-3 col-lg-2">
+            <div class="col-6 col-md-3 col-lg-2 mb-3">
                 <div class="card rounded bg-light shadow-sm border-0">
                     <img src="${furniture.imageUrl}" class="d-block furniture__img" height="110">
                     <div class="card-body p-3 carousel_card rounded-bottom">                            
@@ -48,16 +44,18 @@ function displayFurniture(furniture, type) {
         return `
         <div id="${furniture._id}">
             <div class="row">            
-                <div class="col">
-                    <img src="${furniture.imageUrl}" class="rounded" width="60" height="60">
+                <div class="col-4 col-sm-2">
+                    <a href="product.html?id=${furniture._id}">
+                        <img src="${furniture.imageUrl}" class="rounded" width="60" height="60">
+                    </a>
                 </div>
-                <div class="col align-self-center">
+                <div class="col-7 col-sm-4 align-self-center">
                     <p class="h5">${furniture.name}</p>
                 </div>
-                <div class="col align-self-center text-right">
+                <div class="col-9 col-sm-4 align-self-center text-right">
                     <p class="font-weight-bold h5">${money(furniture.price)}</p>
                 </div>
-                <div class="col-2 align-self-center text-right pr-5">
+                <div class="col-3 col-sm-1 align-self-center text-right pr-5">
                     <button id="remove-${furniture._id}" class="border-0 bg-0 btn_remove"><i class="fas fa-trash-alt"></i></button>
                 </div>
             </div>                      
@@ -102,6 +100,19 @@ function displayFurniture(furniture, type) {
             </div>`
     }
     
+}
+
+function displayFurnitures(array, type, id, option) {
+    let html = '';
+        
+    array.forEach((furniture) => {
+        html += htmlFurniture(furniture, type);
+    });
+    displayHTML(id, html + option);
+}
+
+function displayHTML(id, html) {
+    getElement(id).innerHTML = html;
 }
 
 function getElement(id) {

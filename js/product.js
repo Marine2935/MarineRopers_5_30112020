@@ -1,11 +1,18 @@
+let product = {
+    id : getIdFromUrl(),
+    quantity : 1
+}
+
 ajax(getIdFromUrl())
 .then((furniture) => {
-    showFurniture(furniture);
-    
+    showFurniture(furniture);    
     listenForCartAddition();
-
     document.title = htmlTitle(furniture);  
+    product.name = furniture.name;
+    product.price = furniture.price;
+    product.imageUrl = furniture.imageUrl
 });
+
 
 // bloc 'Vous aimerez aussi'
 
@@ -28,11 +35,11 @@ function displayCarousel(furnitures) {
         
     furnitures.forEach((furniture) => {
         if(furniture._id !== getIdFromUrl()) {
-        product += displayFurniture(furniture, 'carousel')
+        product += htmlFurniture(furniture, 'carousel')
         }
     });
 
-    display('carousel', product);
+    displayHTML('carousel', product);
 }
 
 function htmlPopUp() {    
@@ -61,12 +68,21 @@ function htmlVarnish(varnish) {
 function listenForCartAddition() {
     getElement('addToCart').addEventListener('click', function() {
         let products = [];
-
+        
         if(storage.has('products')) {
-            products = storage.get('products')
+            products = storage.get('products');
+            products.forEach((item) => {
+                if(item.id === product.id) {
+                    item.quantity++
+                }
+                if(item.id !== product.id) {
+                    products.push(product);
+                }
+            })            
+        }    
+        else {
+            products.push(product);
         }
-
-        products.push(getIdFromUrl());
 
         storage.save('products', products);   
         openPopup();
@@ -76,11 +92,11 @@ function listenForCartAddition() {
 
 function openPopup() {
     changeDisplay('popUp', 'flex');
-    display('popUpAlert', htmlPopUp('popUp'))
+    displayHTML('popUpAlert', htmlPopUp('popUp'))
 }
 
 function showFurniture(furniture) {
-    display('furnitureDetails', displayFurniture(furniture, 'single'));
+    displayHTML('furnitureDetails', htmlFurniture(furniture, 'single'));
     displayVarnish(furniture);
 }
 
@@ -91,5 +107,5 @@ function displayVarnish(furniture) {
         html += htmlVarnish(varnish)
     });
 
-    display('furnitureVarnish', html);
+    displayHTML('furnitureVarnish', html);
 }

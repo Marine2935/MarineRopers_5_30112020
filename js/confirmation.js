@@ -1,2 +1,2 @@
-display('orderId', storage.get('orderId'))
-display('totalPrice', storage.get('totalPrice'))
+displayHTML('orderId', storage.get('orderId'))
+displayHTML('totalPrice', storage.get('totalPrice'))
