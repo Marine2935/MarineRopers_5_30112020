@@ -41,74 +41,94 @@
         </div>
     </header>
     <div class="container">
-        <h1 id="cartTitle" class="text-center text-dark font-weight-bold my-5">Votre panier</h1>
-        <div class="row justify-content-center">
-            <div id="cartList" class="col-12 col-lg-8 text-center mt-4"></div>
-            <div id="summary" class="col-12 col-md-6 col-lg-4 bg-light rounded shadow my-4 p-4 h-100">
-                <h3 class="font-weight-bold mb-4">Récapitulatif</h3>
-                <div class="d-flex justify-content-between">
-                    <p>Nombre d'article(s) : </p>
-                    <p id="productNumber"></p> 
+        <div id="emptyCart" class="col-12 text-center mt-4"></div>
+        <div id="cart">
+            <h1 id="cartTitle" class="text-center text-dark font-weight-bold my-5">VOTRE PANIER</h1>
+            <div class="row justify-content-end pt-4">
+                <div class="col-12">
+                    <div class="row align-items-center">
+                        <div class="col-5 ml-3 pl-5">
+                            <p class="h5">Produit</p>
+                        </div>
+                        <div class="col-2 text-center ml-n3">
+                            <p class="h5">Prix</p>
+                        </div>
+                        <div class="col-2">
+                            <p class="h5 pl-2">Quantité</p>
+                        </div>
+                        <div class="col-2 text-center">
+                            <p class="h5">Montant</p>
+                        </div>
+                    </div>                      
+                    <hr> 
                 </div>
-                <div class="d-flex justify-content-between">
-                    <p>Total article(s) : </p>
-                    <p id="totalCart"></p>
-                </div>  
-                <hr class="mt-0">                    
-                <div id="delivery" class="d-flex justify-content-between">
-                    <p>Frais de livraison : </p>
-                    <p id="deliveryCosts"></p>
-                </div> 
-                <hr class="mt-0">  
-                <div class="d-flex justify-content-between font-weight-bold">
-                    <p>TOTAL : </p>
-                    <p id="totalPrice"></p>
+                <div id="cartList" class="col-12 text-center"></div>
+                <div id="summary" class="col-12 col-md-6 bg-light rounded shadow my-4 p-4 h-100">
+                    <h3 class="font-weight-bold mb-4">Récapitulatif</h3>
+                    <div class="d-flex justify-content-between">
+                        <p>Nombre d'article(s) : </p>
+                        <p id="productNumber"></p> 
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p>Sous-Total : </p>
+                        <p id="totalCart"></p>
+                    </div>  
+                    <hr class="mt-0">                    
+                    <div id="delivery" class="d-flex justify-content-between">
+                        <p>Frais de livraison : </p>
+                        <p id="deliveryCosts"></p>
+                    </div> 
+                    <hr class="mt-0">  
+                    <div class="d-flex justify-content-between font-weight-bold">
+                        <p>TOTAL : </p>
+                        <p id="totalPrice"></p>
+                    </div>
+                </div>            
+            </div>     
+            <div id="form">
+                <h2 class="text-center font-weight-bold text-dark mt-5">Passer la commande</h2>
+                <form method="get" class="my-5">
+                    <div class="row justify-content-center my-3">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <label for="firstName">Prénom</label><br>
+                            <input class="form_input rounded" type="text" name="firstName" id="firstName" placeholder="Thomas" required>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <label for="lastName">Nom</label><br>
+                            <input class="form_input rounded" type="text" name="lastName" id="lastName" placeholder="Dupont" required>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center my-3">
+                        <div class="col-12 col-md-8 col-lg-6">
+                            <label for="address">Adresse de livraison</label><br>
+                            <input class="form_input rounded" type="text" name="address" id="address" placeholder="1 rue du parc" required>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center my-3">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <label for="postal">Code Postal</label><br>
+                            <input class="form_input rounded" type="text" id="postal" pattern="[0-9]+" maxlength="5" placeholder="75000" required>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <label for="city">Ville</label><br>
+                            <input class="form_input rounded" type="text" name="city" id="city" placeholder="Paris" required>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center my-3">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <label for="phone">Numéro de téléphone</label><br>
+                            <input class="form_input rounded" type="tel" pattern="[0-9]+" minlength="10" name="phone" id="phone" placeholder="0123456789" required>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <label for="email">Adresse mail</label><br>
+                            <input class="form_input rounded" type="email" name="email" id="email" placeholder="user@contact.com" required>
+                        </div>
+                    </div>
+                    <div class="text-center mt-5">
+                    <button id="buttonSubmit" class="btn btn-dark" type="submit">Commander</button>
                 </div>
-            </div>            
-        </div>     
-        <div id="form">
-            <h2 class="text-center font-weight-bold text-dark mt-5">Passer la commande</h2>
-            <form method="get" class="my-5">
-                <div class="row justify-content-center my-3">
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                        <label for="firstName">Prénom</label><br>
-                        <input class="form_input rounded" type="text" name="firstName" id="firstName" required>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                        <label for="lastName">Nom</label><br>
-                        <input class="form_input rounded" type="text" name="lastName" id="lastName" required>
-                    </div>
-                </div>
-                <div class="row justify-content-center my-3">
-                    <div class="col-12 col-md-8 col-lg-6">
-                        <label for="address">Adresse de livraison</label><br>
-                        <input class="form_input rounded" type="text" name="address" id="address" required>
-                    </div>
-                </div>
-                <div class="row justify-content-center my-3">
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                        <label for="postal">Code Postal</label><br>
-                        <input class="form_input rounded" type="text" id="postal" pattern="[0-9]+" maxlength="5" required>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                        <label for="city">Ville</label><br>
-                        <input class="form_input rounded" type="text" name="city" id="city" required>
-                    </div>
-                </div>
-                <div class="row justify-content-center my-3">
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                        <label for="phone">Numéro de téléphone</label><br>
-                        <input class="form_input rounded" type="tel" pattern="[0-9]+" minlength="10" name="phone" id="phone" required>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                        <label for="email">Adresse mail</label><br>
-                        <input class="form_input rounded" type="email" name="email" id="email" required>
-                    </div>
-                </div>
-                <div class="text-center mt-5">
-                <button id="buttonSubmit" class="btn btn-dark" type="submit">Commander</button>
+                </form>
             </div>
-            </form>
         </div>
     </div>
     <div class="bg-light mt-5">

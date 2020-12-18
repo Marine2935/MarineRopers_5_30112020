@@ -43,19 +43,31 @@ function htmlFurniture(furniture, type) {
     if(type == 'cart') {
         return `
         <div id="${furniture._id}">
-            <div class="row">            
-                <div class="col-4 col-sm-2">
+            <div class="row align-items-center">            
+                <div class="col-2">
                     <a href="product.html?id=${furniture._id}">
                         <img src="${furniture.imageUrl}" class="rounded" width="60" height="60">
                     </a>
                 </div>
-                <div class="col-7 col-sm-4 align-self-center">
+                <div class="col-3 text-left">
                     <p class="h5">${furniture.name}</p>
                 </div>
-                <div class="col-9 col-sm-4 align-self-center text-right">
-                    <p class="font-weight-bold h5">${money(furniture.price)}</p>
+                <div class="col-2">
+                    <p class="h5">${money(furniture.price)}</p>
                 </div>
-                <div class="col-3 col-sm-1 align-self-center text-right pr-5">
+                <div class="col-2 input-group">
+                    <div class="input-group-prepend">
+                        <button id="less-${furniture._id}" class="btn btn-light rounded-left border btn_input" type="button">-</button>
+                    </div>
+                    <input id="inputQuantity-${furniture._id}" class="form-control input_spinner text-center" type="number" value="${furniture.quantity}">
+                    <div class="input-group-append">
+                        <button id="more-${furniture._id}" class="btn btn-light rounded-right border btn_input" type="button">+</button>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <p class="font-weight-bold h5">${money(furniture.price * furniture.quantity)}</p>
+                </div>
+                <div class="col-1 pr-5">
                     <button id="remove-${furniture._id}" class="border-0 bg-0 btn_remove"><i class="fas fa-trash-alt"></i></button>
                 </div>
             </div>                      
@@ -76,23 +88,33 @@ function htmlFurniture(furniture, type) {
                     <div class="col">
                         <h1 id="furnitureName" class="h2 text-center text-dark font-weight-bold my-3">${furniture.name}</h1>
                         <hr>
-                        <p class="meuble__description">${furniture.description}</p>
+                        <p class="meuble__description mt-5">${furniture.description}</p>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col mt-4 mt-lg-3 mt-xl-4">
-                        <form method="post" action ="">
-                            <label for="varnish">Choix de vernis</label>
-                            <br>
-                            <select id="furnitureVarnish" name="varnish">
-                            </select>
+                    <div class="col-4 mt-4 mt-lg-3 mt-xl-4">
+                        <form method="post" action ="" aria-label="Choix de vernis">
+                            <select id="furnitureVarnish" class="form-control" name="varnish"></select>
                         </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
                         <div id="furniturePrice">
                             <p class="h4 text-right font-weight-bold my-4 my-lg-3 my-xl-4">${money(furniture.price)}</p>
                         </div> 
                     </div>
                 </div>
                 <div class="row text-right justify-content-end">
+                    <div class="col-3 align-self-center input-group">
+                        <div class="input-group-prepend">
+                            <button id="reduceButton" class="btn btn-light rounded-left border btn_input" type="button">-</button>
+                        </div>
+                        <input id="inputQuantity" class="form-control input_spinner text-center" type="number" min="1" value="1">
+                        <div class="input-group-append">
+                            <button id="increaseButton" class="btn btn-light rounded-right border btn_input" type="button">+</button>
+                        </div>
+                    </div>
                     <div class="col col-md-4 col-lg-5 col-xl-4">
                         <button id="addToCart" class="btn btn-info">Ajouter au panier</button>
                     </div>       
@@ -126,4 +148,9 @@ function getIdFromUrl() {
 
 function money(value) {
     return `${euro.format(value / 100)}`
+}
+
+function removeItemFromArray(array, id) {
+    let index = array.indexOf(id);
+    array.splice(index, 1);
 }

@@ -1,16 +1,17 @@
 let product = {
-    id : getIdFromUrl(),
-    quantity : 1
+    _id : getIdFromUrl()
 }
 
 ajax(getIdFromUrl())
 .then((furniture) => {
-    showFurniture(furniture);    
+    showFurniture(furniture);  
+    listenIncrease();
+    listenReduce();
     listenForCartAddition();
     document.title = htmlTitle(furniture);  
     product.name = furniture.name;
     product.price = furniture.price;
-    product.imageUrl = furniture.imageUrl
+    product.imageUrl = furniture.imageUrl;
 });
 
 
@@ -32,13 +33,19 @@ function closePopup() {
 
 function displayCarousel(furnitures) {
     let product = '';
-        
-    furnitures.forEach((furniture) => {
-        if(furniture._id !== getIdFromUrl()) {
-        product += htmlFurniture(furniture, 'carousel')
-        }
-    });
+    let i = 0;
 
+    while(i < 4) {
+        for(let furniture of furnitures) {
+            if(furniture._id !== getIdFromUrl()) {
+                i ++;
+                product += htmlFurniture(furniture, 'carousel'); 
+                if(i === 4) {
+                    break
+                }  
+            } 
+        }
+    }
     displayHTML('carousel', product);
 }
 
@@ -66,27 +73,42 @@ function htmlVarnish(varnish) {
 }
 
 function listenForCartAddition() {
-    getElement('addToCart').addEventListener('click', function() {
+    getElement('addToCart').addEventListener('click', () => {
         let products = [];
-        
+        let input = getElement('inputQuantity');
+
+        product.quantity = input.valueAsNumber;
+
         if(storage.has('products')) {
             products = storage.get('products');
             products.forEach((item) => {
-                if(item.id === product.id) {
-                    item.quantity++
-                }
-                if(item.id !== product.id) {
-                    products.push(product);
+                if(item._id === product._id) {                    
+                    product.quantity = input.valueAsNumber + item.quantity
+                    removeItemFromArray(products, item)
                 }
             })            
-        }    
-        else {
-            products.push(product);
         }
+        products.push(product);       
 
         storage.save('products', products);   
         openPopup();
         closePopup();
+    })
+}
+
+function listenIncrease() {
+    getElement('increaseButton').addEventListener('click', () => {
+        let input = getElement('inputQuantity');
+        input.setAttribute('value', input.value++)
+    })
+}
+
+function listenReduce() {
+    getElement('reduceButton').addEventListener('click', () => {
+        let input = getElement('inputQuantity');
+        if(input.value > 1) {
+            input.setAttribute('value', input.value--)
+        }
     })
 }
 
@@ -107,5 +129,5 @@ function displayVarnish(furniture) {
         html += htmlVarnish(varnish)
     });
 
-    displayHTML('furnitureVarnish', html);
+    displayHTML('furnitureVarnish', `<option selected>Choix de vernis</option>` + html);
 }

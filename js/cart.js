@@ -1,18 +1,16 @@
-let products = storage.get('products');
-
 if(!storage.has('products')) {   
     emptyCart();
 }   
 
-ajax('')
-.then((allProducts) => {  
-    displayCart(allProducts);    
-})
-.then(() => {    
+let products = storage.get('products');
+
+displayCart(products)
+.then(() => {     
     products.forEach((product) => {
-        addDeletion(product);
-    })
-        
+        addDeletion(product._id);
+        listenForLessQuantity(product._id);
+        listenForMoreQuantity(product._id);
+    });   
     listenRemoveAll('removeAll');
 })
 
@@ -41,24 +39,31 @@ getElement('buttonSubmit').addEventListener('click', (event) => {
 
 ///////// FONCTIONS
 
-function addDeletion(product) {
-    getElement(`remove-${product}`).addEventListener('click', () => {     
-        removeItemFromArray(products, product);
+function addDeletion(productId) {
+    getElement(`remove-${productId}`).addEventListener('click', () => {     
+        removeItemFromArray(products, productId);
         refreshStorage('products');
         window.location.reload();
     })           
 }
 
+function countArticles(products) {
+    let initialValue = 0;
+    return products.reduce((acc, product) => 
+        acc + product.quantity, initialValue
+    )
+}
+
 function countTotal(products) {
     let initialValue = 0;
     return products.reduce((acc, product) => 
-        acc + product.price, initialValue
+        acc + product.price * product.quantity, initialValue
     )
 }
 
 function delivery(value) {
     if((value / 100) >= 1000) {
-        displayHTML('deliveryCosts', 'Offerts');
+        displayHTML('deliveryCosts', 'OFFERTS');
         getElement('deliveryCosts').style.fontWeight = 'bold';
         getElement('delivery').style.color = '#0AA32D';
         return 0
@@ -68,28 +73,24 @@ function delivery(value) {
     } 
 }
 
-function displayCart(allProducts) {
-    let productsInCart = filterProducts(allProducts)   
-    
-    displayFurnitures(productsInCart, 'cart', 'cartList', htmlButtonRemoveAll());
-    displaySummary(productsInCart);
+async function displayCart(products) {
+    displayFurnitures(products, 'cart', 'cartList', htmlButtonRemoveAll());
+    displaySummary(products);
 }
 
 function displaySummary(products) {
     let total = countTotal(products);
     let totalPrice = money(total + delivery(total))
 
-    displayHTML('productNumber', products.length);
+    displayHTML('productNumber', countArticles(products));
     displayHTML('totalCart', money(total));
     displayHTML('totalPrice', totalPrice)
     storage.save('totalPrice', totalPrice)
 }
 
 function emptyCart() {
-    displayHTML('cartList', emptyCartMessage());
-    changeDisplay('summary', 'none');
-    changeDisplay('form', 'none');
-    changeDisplay('cartTitle', 'none');
+    displayHTML('emptyCart', emptyCartMessage());
+    changeDisplay('cart', 'none');
 }
 
 function emptyCartMessage() {    
@@ -98,17 +99,37 @@ function emptyCartMessage() {
         <a class="btn btn-info" role="button" href="index.html">Continuer mes achats</a>`
 }
 
-function filterProducts(productsIds) { 
-    return productsIds.filter((product) => {
-        return (products.includes(product._id));
-    })
-}
-
 function htmlButtonRemoveAll() {
     return `
         <div class="text-right">
             <button id="removeAll" class="btn btn-light shadow-sm">Vider le panier</button>
         </div>`        
+}
+
+function listenForLessQuantity(productId) {
+    getElement(`less-${productId}`).addEventListener('click', () => {
+        let input = getElement(`inputQuantity-${productId}`);
+
+        products.forEach((item) => {
+            if(item._id === productId && input.value > 1) {
+                item.quantity--
+            }
+        })
+        storage.save('products', products);
+        window.location.reload();
+    })
+}
+
+function listenForMoreQuantity(productId) {
+    getElement(`more-${productId}`).addEventListener('click', () => {
+        products.forEach((item) => {
+            if(item._id === productId) {
+                item.quantity++
+            }
+        })
+        storage.save('products', products); 
+        window.location.reload();
+    })
 }
 
 function listenRemoveAll(id) {
@@ -133,9 +154,4 @@ function refreshStorage(name) {
     if(products.length !== 0) {
         storage.save(name, products);
     } 
-}
-
-function removeItemFromArray(array, id) {
-    let index = array.indexOf(id);
-    array.splice(index, 1);
 }
