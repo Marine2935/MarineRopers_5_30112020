@@ -6,6 +6,18 @@ function changeDisplay(id, display) {
     document.getElementById(id).style.display = display;
 }
 
+function countArticles() {
+    if (!storage.has('products')) {
+        return 0
+    }
+
+    let initialValue = 0;
+
+    return storage.get('products').reduce((acc, product) => 
+        acc + product.quantity, initialValue
+    )
+}
+
 function htmlFurniture(furniture, type) {
     if(type == 'card') {
         return `
@@ -137,13 +149,18 @@ function displayHTML(id, html) {
     getElement(id).innerHTML = html;
 }
 
+function displayItemsInCart() {
+    let articlesQuantity = countArticles();
+    getElement('quantityProductsInCart').innerText = articlesQuantity;
+}
+
 function getElement(id) {
     return document.getElementById(id);
 }
 
-function getIdFromUrl() {
+function getIdFromUrl(id) {
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('id');
+    return urlParams.get(id);
 }
 
 function money(value) {

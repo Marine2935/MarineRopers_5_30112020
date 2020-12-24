@@ -1,8 +1,8 @@
 let product = {
-    _id : getIdFromUrl()
+    _id : getIdFromUrl('id')
 }
 
-ajax(getIdFromUrl())
+ajax(getIdFromUrl('id'))
 .then((furniture) => {
     showFurniture(furniture);  
     listenIncrease();
@@ -13,6 +13,7 @@ ajax(getIdFromUrl())
     product.price = furniture.price;
     product.imageUrl = furniture.imageUrl;
 });
+displayItemsInCart();
 
 
 // bloc 'Vous aimerez aussi'
@@ -37,7 +38,7 @@ function displayCarousel(furnitures) {
 
     while(i < 4) {
         for(let furniture of furnitures) {
-            if(furniture._id !== getIdFromUrl()) {
+            if(furniture._id !== getIdFromUrl('id')) {
                 i ++;
                 product += htmlFurniture(furniture, 'carousel'); 
                 if(i === 4) {

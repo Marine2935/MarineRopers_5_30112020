@@ -1,2 +1,3 @@
-displayHTML('orderId', storage.get('orderId'))
-displayHTML('totalPrice', storage.get('totalPrice'))
+displayHTML('orderId', getIdFromUrl('order_id'));
+displayHTML('totalPrice', getIdFromUrl('total'));
+displayItemsInCart();

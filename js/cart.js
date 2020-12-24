@@ -3,55 +3,29 @@ if(!storage.has('products')) {
 }   
 
 let products = storage.get('products');
+let totalPrice = 0;
 
-displayCart(products)
-.then(() => {     
-    products.forEach((product) => {
-        addDeletion(product._id);
-        listenForLessQuantity(product._id);
-        listenForMoreQuantity(product._id);
-    });   
-    listenRemoveAll('removeAll');
-})
+displayCart(products);
+displayItemsInCart();
 
+products.forEach((product) => {
+    listenForDeletion(product._id);
+    listenForLessQuantity(product._id);
+    listenForMoreQuantity(product._id);
+});   
+listenRemoveAll('removeAll');
+listenForCartSubmission();
 
-//////////// FORMULAIRE
-
-const contact = {
-    firstName : getElement('firstName').value,
-    lastName : getElement('lastName').value,            
-    address : getElement('address').value,
-    postal : getElement('postal').value,
-    city : getElement('city').value,
-    phone : getElement('phone').value,
-    email : getElement('email').value
-}
-
-getElement('buttonSubmit').addEventListener('click', (event) => {
-    event.preventDefault();
-    ajax('order', optionsPost({contact, products}))
-    .then((result) => {
-        storage.save('orderId', result.orderId);
-        document.location.href="confirmation.html"
-    })
-})
 
 
 ///////// FONCTIONS
 
-function addDeletion(productId) {
+function listenForDeletion(productId) {
     getElement(`remove-${productId}`).addEventListener('click', () => {     
         removeItemFromArray(products, productId);
         refreshStorage('products');
         window.location.reload();
     })           
-}
-
-function countArticles(products) {
-    let initialValue = 0;
-    return products.reduce((acc, product) => 
-        acc + product.quantity, initialValue
-    )
 }
 
 function countTotal(products) {
@@ -73,19 +47,18 @@ function delivery(value) {
     } 
 }
 
-async function displayCart(products) {
+function displayCart(products) {
     displayFurnitures(products, 'cart', 'cartList', htmlButtonRemoveAll());
     displaySummary(products);
 }
 
 function displaySummary(products) {
     let total = countTotal(products);
-    let totalPrice = money(total + delivery(total))
+    totalPrice = money(total + delivery(total))
 
-    displayHTML('productNumber', countArticles(products));
+    displayHTML('productNumber', countArticles());
     displayHTML('totalCart', money(total));
     displayHTML('totalPrice', totalPrice)
-    storage.save('totalPrice', totalPrice)
 }
 
 function emptyCart() {
@@ -104,6 +77,28 @@ function htmlButtonRemoveAll() {
         <div class="text-right">
             <button id="removeAll" class="btn btn-light shadow-sm">Vider le panier</button>
         </div>`        
+}
+
+function listenForCartSubmission() {    
+    getElement('buttonSubmit').addEventListener('click', (event) => {
+        event.preventDefault();
+        const contact = {
+            firstName : getElement('firstName').value,
+            lastName : getElement('lastName').value,            
+            address : getElement('address').value,
+            postal : getElement('postal').value,
+            city : getElement('city').value,
+            phone : getElement('phone').value,
+            email : getElement('email').value
+        }    
+        
+
+        ajax('order', optionsPost({contact, products}))
+        .then((result) => {
+            storage.remove('products');
+            document.location.href=`confirmation.html?order_id=${result.orderId}&total=${totalPrice}`
+        })
+    })
 }
 
 function listenForLessQuantity(productId) {
@@ -136,6 +131,7 @@ function listenRemoveAll(id) {
     getElement(id).addEventListener('click', () => {
         storage.remove('products');
         emptyCart();
+        displayItemsInCart();
     })
 }
 
