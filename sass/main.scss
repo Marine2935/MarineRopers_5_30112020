@@ -1,5 +1,6 @@
 @import "variable_overrides";
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import "button_input";
 @import "cart";
 @import "product";
 
@@ -21,11 +22,11 @@ header {
     justify-content: flex-end;
 }
 
-.icone_panier {
+.icon_cart {
     margin-right: 6px;
 }
    
-.input {
+.search {
     &__container {
         position: relative;
     }
@@ -65,25 +66,4 @@ header {
 
 footer {
     background: $orinoco;
-}
-.btn_input {
-    width: 1.9rem;
-    padding: .375rem .6rem;
-}
-
-.input_spinner {
-    padding: .375rem 0.5rem;
-    max-width: 40px;
-}
-
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-      -webkit-appearance: none; 
-      margin: 0; 
-}
-
-input[type=number] { 
-    -moz-appearance: textfield;
-    appearance: textfield;
-    margin: 0; 
 }

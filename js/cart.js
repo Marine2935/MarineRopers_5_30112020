@@ -1,19 +1,25 @@
-if(!storage.has('products')) {   
+if (!storage.has('products')) {   
     emptyCart();
-}   
+};   
 
-let products = storage.get('products');
-let totalPrice = 0;
+const products = storage.get('products');
+const total = countTotal(products);
+const grandTotal = total + delivery(total);
 
-displayCart(products);
+displayFurnitures(products, 'cart', 'cartList', htmlButtonRemoveAll());
+displayHTML('productNumber', countArticles());
+displayHTML('totalCart', money(total));
+displayHTML('totalPrice', money(grandTotal));
 displayItemsInCart();
 
 products.forEach((product) => {
     listenForDeletion(product._id);
     listenForLessQuantity(product._id);
     listenForMoreQuantity(product._id);
-});   
-listenRemoveAll('removeAll');
+});  
+
+listenRemoveAll();
+listenForValidation();
 listenForCartSubmission();
 
 
@@ -30,13 +36,14 @@ function listenForDeletion(productId) {
 
 function countTotal(products) {
     let initialValue = 0;
+
     return products.reduce((acc, product) => 
         acc + product.price * product.quantity, initialValue
     )
 }
 
 function delivery(value) {
-    if((value / 100) >= 1000) {
+    if ((value / 100) >= 1000) {
         displayHTML('deliveryCosts', 'OFFERTS');
         getElement('deliveryCosts').style.fontWeight = 'bold';
         getElement('delivery').style.color = '#0AA32D';
@@ -45,20 +52,6 @@ function delivery(value) {
         displayHTML('deliveryCosts', money(7500));
         return 7500
     } 
-}
-
-function displayCart(products) {
-    displayFurnitures(products, 'cart', 'cartList', htmlButtonRemoveAll());
-    displaySummary(products);
-}
-
-function displaySummary(products) {
-    let total = countTotal(products);
-    totalPrice = money(total + delivery(total))
-
-    displayHTML('productNumber', countArticles());
-    displayHTML('totalCart', money(total));
-    displayHTML('totalPrice', totalPrice)
 }
 
 function emptyCart() {
@@ -90,13 +83,12 @@ function listenForCartSubmission() {
             city : getElement('city').value,
             phone : getElement('phone').value,
             email : getElement('email').value
-        }    
-        
+        };
 
         ajax('order', optionsPost({contact, products}))
         .then((result) => {
             storage.remove('products');
-            document.location.href=`confirmation.html?order_id=${result.orderId}&total=${totalPrice}`
+            document.location.href=`confirmation.html?order_id=${result.orderId}&total=${grandTotal}`;
         })
     })
 }
@@ -106,10 +98,11 @@ function listenForLessQuantity(productId) {
         let input = getElement(`inputQuantity-${productId}`);
 
         products.forEach((item) => {
-            if(item._id === productId && input.value > 1) {
-                item.quantity--
+            if (item._id === productId && input.value > 1) {
+                item.quantity--;
             }
-        })
+        });
+
         storage.save('products', products);
         window.location.reload();
     })
@@ -118,17 +111,32 @@ function listenForLessQuantity(productId) {
 function listenForMoreQuantity(productId) {
     getElement(`more-${productId}`).addEventListener('click', () => {
         products.forEach((item) => {
-            if(item._id === productId) {
-                item.quantity++
+            if (item._id === productId) {
+                item.quantity++;
             }
-        })
+        });
+
         storage.save('products', products); 
         window.location.reload();
     })
 }
 
-function listenRemoveAll(id) {
-    getElement(id).addEventListener('click', () => {
+function listenForValidation() {
+    let validator = new Validator ([
+        'firstName',
+        'lastName',
+        'address',
+        'postal',
+        'city',
+        'phone',
+        'email'
+    ], 'buttonSubmit');
+
+    validator.watch();
+}
+
+function listenRemoveAll() {
+    getElement('removeAll').addEventListener('click', () => {
         storage.remove('products');
         emptyCart();
         displayItemsInCart();
@@ -147,7 +155,8 @@ function optionsPost(object) {
 
 function refreshStorage(name) {
     storage.remove(name);
-    if(products.length !== 0) {
+
+    if (products.length !== 0) {
         storage.save(name, products);
     } 
 }

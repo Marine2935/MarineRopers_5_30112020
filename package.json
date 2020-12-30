@@ -8,16 +8,5 @@
     "sass": "sass --watch ./sass/main.scss:./css/style.css --style compressed"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.0.0",
-    "body-parser": "^1.18.3",
-    "bootstrap": "^4.5.3",
-    "bootstrap-input-spinner": "^1.16.8",
-    "express": "^4.16.4",
-    "jsonwebtoken": "^8.3.0",
-    "mongoose": "^5.3.8",
-    "mongoose-unique-validator": "^2.0.2",
-    "uuid": "^3.3.2"
-  }
+  "license": "ISC"
 }

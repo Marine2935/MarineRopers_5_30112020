@@ -1,0 +1,22 @@
+.btn_input {
+    width: 1.9rem;
+    padding: .375rem .6rem;
+    z-index: 0!important;
+}
+
+.input_spinner {
+    padding: .375rem 0.5rem;
+    max-width: 40px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+}
+
+input[type=number] { 
+    -moz-appearance: textfield;
+    appearance: textfield;
+    margin: 0; 
+}

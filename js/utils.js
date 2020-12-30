@@ -3,19 +3,19 @@ function ajax(url, options) {
 }
 
 function changeDisplay(id, display) {
-    document.getElementById(id).style.display = display;
+    return document.getElementById(id).style.display = display;
 }
 
 function countArticles() {
     if (!storage.has('products')) {
-        return 0
-    }
+        return 0;
+    };
 
     let initialValue = 0;
 
     return storage.get('products').reduce((acc, product) => 
         acc + product.quantity, initialValue
-    )
+    );
 }
 
 function htmlFurniture(furniture, type) {
@@ -33,7 +33,7 @@ function htmlFurniture(furniture, type) {
                     </div>
                 </div>
             </div>`
-    } 
+    }; 
 
     if(type == 'carousel') {
         return `
@@ -50,7 +50,7 @@ function htmlFurniture(furniture, type) {
                     </div>
                 </div>
             </div>`
-    }
+    };
 
     if(type == 'cart') {
         return `
@@ -85,7 +85,7 @@ function htmlFurniture(furniture, type) {
             </div>                      
             <hr> 
         </div>`
-    }
+    };
 
     if(type == 'single') {
        return `
@@ -142,16 +142,18 @@ function displayFurnitures(array, type, id, option) {
     array.forEach((furniture) => {
         html += htmlFurniture(furniture, type);
     });
+
     displayHTML(id, html + option);
 }
 
 function displayHTML(id, html) {
-    getElement(id).innerHTML = html;
+    return getElement(id).innerHTML = html;
 }
 
 function displayItemsInCart() {
     let articlesQuantity = countArticles();
-    getElement('quantityProductsInCart').innerText = articlesQuantity;
+
+    return getElement('quantityProductsInCart').innerText = articlesQuantity;
 }
 
 function getElement(id) {
@@ -160,14 +162,16 @@ function getElement(id) {
 
 function getIdFromUrl(id) {
     const urlParams = new URLSearchParams(window.location.search);
+
     return urlParams.get(id);
 }
 
 function money(value) {
-    return `${euro.format(value / 100)}`
+    return `${euro.format(value / 100)}`;
 }
 
 function removeItemFromArray(array, id) {
     let index = array.indexOf(id);
-    array.splice(index, 1);
+    
+    return array.splice(index, 1);
 }
