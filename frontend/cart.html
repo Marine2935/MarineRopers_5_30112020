@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="./images/favicon.png">
+
+    <link rel="stylesheet" href="images/fontawesome/css/all.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    
+    <script src="js/storage.js" defer></script>
+    <script src="js/validator.js" defer></script>
+    <script src="js/constante.js" defer></script> 
+    <script src="js/utils.js" defer></script>   
+    <script src="js/cart.js" defer></script>
+
+    <title>Mon panier - Orinoco</title>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="row">
+                <nav class="col navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="index.html">
+                        <img src="images/logo.png" alt="Logo Orinoco" />
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div id="navbarContent" class="collapse navbar-collapse menu">
+                       <ul class="navbar-nav">
+                        <li class="nav-item mr-5">
+                            <a class="nav-link font-weight-bold" href="index.html">ACCUEIL</a>
+                        </li>
+                        <li class="nav-item active mr-3">
+                            <a class="nav-link font-weight-bold" href="cart.html"><span id="quantityProductsInCart"></span> <i class="fas fa-shopping-basket icon_cart mr-2"></i>PANIER</a>
+                        </li>
+                    </ul> 
+                    </div>
+                </nav>
+            </div>            
+        </div>
+    </header>
+    <div class="container">
+        <div id="emptyCart" class="col-12 text-center mt-4"></div>
+        <div id="cart">
+            <h1 id="cartTitle" class="text-center text-dark font-weight-bold my-5">VOTRE PANIER</h1>
+            <div class="row justify-content-end pt-4">
+                <div class="col-12">
+                    <div class="row align-items-center">
+                        <div class="col-6 col-md-4 pl-md-5">
+                            <p class="h5">Produit</p>
+                        </div>
+                        <div class="col-3 text-center d-none d-md-block ml-n3">
+                            <p class="h5">Prix</p>
+                        </div>
+                        <div class="col-2 d-none d-md-block">
+                            <p class="h5 pl-2">Quantité</p>
+                        </div>
+                        <div class="col-6 col-md-3 text-right text-md-center">
+                            <p class="h5">Montant</p>
+                        </div>
+                    </div>                      
+                    <hr> 
+                </div>
+                <div id="cartList" class="col-12 text-center"></div>
+                <div id="summary" class="col-12 col-md-6 bg-light rounded shadow my-4 p-4 h-100">
+                    <h3 class="font-weight-bold mb-4">Récapitulatif</h3>
+                    <div class="d-flex justify-content-between">
+                        <p>Nombre d'article(s) : </p>
+                        <p id="productNumber"></p> 
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p>Sous-Total : </p>
+                        <p id="totalCart"></p>
+                    </div>  
+                    <hr class="mt-0">                    
+                    <div id="delivery" class="d-flex justify-content-between">
+                        <p>Frais de livraison : </p>
+                        <p id="deliveryCosts"></p>
+                    </div> 
+                    <hr class="mt-0">  
+                    <div class="d-flex justify-content-between font-weight-bold">
+                        <p>TOTAL : </p>
+                        <p id="totalPrice"></p>
+                    </div>
+                </div>            
+            </div>     
+            <div id="form">
+                <h2 class="text-center font-weight-bold text-dark mt-5">Passer la commande</h2>
+                <form method="get" class="my-5">
+                    <div class="row justify-content-center my-3">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <label for="firstName">Prénom</label><br>
+                            <input class="form__input rounded" type="text" name="firstName" id="firstName" placeholder="Thomas" required>
+                            <p class="form__icon">
+                                <span id="check_firstName" class="form__icon__check"><i class="fas fa-check"></i></span>
+                                <span id="wrong_firstName" class="form__icon__wrong"><i class="fas fa-times"></i></span>
+                            </p>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <label for="lastName">Nom</label><br>
+                            <input class="form__input rounded" type="text" name="lastName" id="lastName" placeholder="Dupont" required>
+                            <p class="form__icon">
+                                <span id="check_lastName" class="form__icon__check"><i class="fas fa-check"></i></span>
+                                <span id="wrong_lastName" class="form__icon__wrong"><i class="fas fa-times"></i></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center my-3">
+                        <div class="col-12 col-md-8 col-lg-6">
+                            <label for="address">Adresse de livraison</label><br>
+                            <input class="form__input rounded" type="text" name="address" id="address" placeholder="1 rue du parc" required>
+                            <p class="form__icon">
+                                <span id="check_address" class="form__icon__check"><i class="fas fa-check"></i></span>
+                                <span id="wrong_address" class="form__icon__wrong"><i class="fas fa-times"></i></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center my-3">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <label for="postal">Code Postal</label><br>
+                            <input class="form__input rounded" type="text" id="postal" pattern="[0-9]+" maxlength="5" placeholder="75000" required>
+                            <p class="form__icon">
+                                <span id="check_postal" class="form__icon__check"><i class="fas fa-check"></i></span>
+                                <span id="wrong_postal" class="form__icon__wrong"><i class="fas fa-times"></i></span>
+                            </p>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <label for="city">Ville</label><br>
+                            <input class="form__input rounded" type="text" name="city" id="city" placeholder="Paris" required>
+                            <p class="form__icon">
+                                <span id="check_city" class="form__icon__check"><i class="fas fa-check"></i></span>
+                                <span id="wrong_city" class="form__icon__wrong"><i class="fas fa-times"></i></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center my-3">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <label for="phone">Numéro de téléphone</label><br>
+                            <input class="form__input rounded" type="tel" pattern="[0-9]+" minlength="10" name="phone" id="phone" placeholder="0123456789" required>
+                            <p class="form__icon">
+                                <span id="check_phone" class="form__icon__check"><i class="fas fa-check"></i></span>
+                                <span id="wrong_phone" class="form__icon__wrong"><i class="fas fa-times"></i></span>
+                            </p>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <label for="email">Adresse mail</label><br>
+                            <input class="form__input rounded" type="email" name="email" id="email" placeholder="user@contact.com" required>
+                            <p class="form__icon">
+                                <span id="check_email" class="form__icon__check"><i class="fas fa-check"></i></span>
+                                <span id="wrong_email" class="form__icon__wrong"><i class="fas fa-times"></i></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-5">
+                    <button id="buttonSubmit" class="btn btn-dark" type="submit" disabled>Commander</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="bg-light mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 col-lg-3 p-4 text-center">
+                    <i class="fas fa-award pb-2 banner_icon"></i><br>
+                    Garantie 2 ans
+                </div>
+                <div class="col-6 col-lg-3 p-4 text-center">
+                    <i class="fas fa-undo-alt pb-2 banner_icon"></i><br>
+                    30 jours pour changer d'avis
+                </div>
+                <div class="col-6 col-lg-3 p-4 text-center">
+                    <i class="far fa-credit-card pb-2 banner_icon"></i><br>
+                    Paiement en 3x ou 4x sans frais
+                </div>
+                <div class="col-6 col-lg-3 p-4 text-center">
+                    <i class="fas fa-lock pb-2 banner_icon"></i><br>
+                    Paiement sécurisé
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="row py-3 text-light">
+                <div class="col-12 col-sm-4">
+                    <ul class="list-unstyled text-center">
+                        <li>À propos</li>
+                        <li>Confidentialité</li>
+                    </ul>
+                </div>
+                <div class="col-12 col-sm-4">
+                    <ul class="list-unstyled text-center">                       
+                        <li>Frais et délais de livraison</li>
+                        <li>Moyens de paiement</li>
+                    </ul>
+                </div>
+                <div class="col-12 col-sm-4">
+                    <ul class="list-unstyled text-center">
+                        <li>Mentions Légales</li>
+                        <li>Conditions générales de ventes</li>                       
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>   
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
