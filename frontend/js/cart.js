@@ -94,6 +94,7 @@ function listenForCartSubmission(total) {
             storage.remove('products');
             document.location.href=`confirmation.html?order_id=${result.orderId}&total=${total}`;
         })
+        .catch(error => console.log(error));
     })
 }
 

@@ -25,7 +25,8 @@ ajax('')
     product.name = furnitureId.name;
     product.price = furnitureId.price;
     product.imageUrl = furnitureId.imageUrl;
-});
+})
+.catch(error => console.log(error));
 
 displayItemsInCart();
 

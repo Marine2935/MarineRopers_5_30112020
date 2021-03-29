@@ -1,5 +1,7 @@
 function ajax(url, options) {
-    return fetch('http://localhost:3000/api/furniture/' + url, options).then(response => response.json());
+    return fetch('http://localhost:3000/api/furniture/' + url, options)
+    .then(response => response.json())
+    .catch(error => console.log(error));
 }
 
 function changeDisplay(id, display) {
